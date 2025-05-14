@@ -8,11 +8,14 @@ export default function SessionTemplatesControl() {
   const [activeSession, setActiveSession] = useState<ActiveSessionState | null>(null)
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [templates, setTemplates] = useState<SessionTemplate[]>(DEFAULT_SESSION_TEMPLATES)
+  const [templateCycles, setTemplateCycles] = useState<{[key: string]: number}>({})
 
   useEffect(() => {
-    chrome.storage.local.get('activeSession', (data: any) => {
+    chrome.storage.local.get(['activeSession', 'templateCycles'], (data: any) => {
       setActiveSession(data.activeSession || null)
+      setTemplateCycles(data.templateCycles || {})
     })
+
     const listener = (changes: any, area: string) => {
       if (area === 'local' && changes.activeSession) {
         setActiveSession(changes.activeSession.newValue || null)
@@ -59,6 +62,22 @@ export default function SessionTemplatesControl() {
     chrome.runtime.sendMessage({ type: 'END_SESSION' })
   }
 
+  const handleCycleChange = (templateId: string, cycles: number) => {
+    const newCycles = { ...templateCycles, [templateId]: cycles }
+    setTemplateCycles(newCycles)
+    chrome.storage.local.set({ templateCycles: newCycles })
+  }
+
+  const handleStartSession = (template: SessionTemplate) => {
+    const cycles = templateCycles[template.id] || template.cycles || 1
+    const sessionTemplate = { ...template, cycles }
+    chrome.runtime.sendMessage({ 
+      type: 'START_SESSION', 
+      templateId: template.id,
+      template: sessionTemplate
+    })
+  }
+
   if (activeSession) {
     const template = templates.find(t => t.id === activeSession.templateId)
     return (
@@ -90,10 +109,18 @@ export default function SessionTemplatesControl() {
             <div className="session_templates_control__template__name">{template.name}</div>
             <div className="session_templates_control__template__duration">
               {template.workMinutes}m work / {template.breakMinutes}m break
-              {template.cycles && ` • ${template.cycles} cycles`}
+            </div>
+            <div className="session_templates_control__template__cycles">
+              <input
+                type="number"
+                min="1"
+                value={templateCycles[template.id] || template.cycles || 1}
+                onChange={(e) => handleCycleChange(template.id, Math.max(1, parseInt(e.target.value) || 1))}
+              />
+              <span>cycles</span>
             </div>
           </div>
-          <Button text="Start" onClick={() => chrome.runtime.sendMessage({ type: 'START_SESSION', templateId: template.id })} />
+          <Button text="Start" onClick={() => handleStartSession(template)} />
         </div>
       ))}
     </div>
