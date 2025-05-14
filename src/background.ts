@@ -197,6 +197,13 @@ async function startSession(templateId: string, templateData?: SessionTemplate) 
 
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: true });
+  
+  // Sync the focus mode timer with the session timer
+  await chrome.storage.local.set({
+    focusModeEndTime: phaseEndTime,
+    focusModeDuration: template.workMinutes
+  });
+  
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
   chrome.notifications.create(SESSION_ALARM_NAME + '_start', {
     type: 'basic',
@@ -251,6 +258,19 @@ async function transitionSessionPhase() {
 
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: nextPhase === 'work' });
+  
+  if (nextPhase === 'work') {
+    // Only sync focus mode timer for work phases
+    await chrome.storage.local.set({
+      focusModeEndTime: phaseEndTime,
+      focusModeDuration: durationMinutes
+    });
+  } else {
+    // For break phases, clear the focus mode
+    await chrome.storage.local.remove("focusModeEndTime");
+    await chrome.storage.local.remove("focusModeDuration");
+  }
+  
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
 
   const title = nextPhase === 'work' 
@@ -282,6 +302,11 @@ async function pauseSession() {
   };
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: false });
+  
+  // Clear the focus mode when session is paused
+  await chrome.storage.local.remove("focusModeEndTime");
+  await chrome.storage.local.remove("focusModeDuration");
+  
   chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
 }
 
@@ -302,6 +327,15 @@ async function resumeSession() {
   };
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: newState.currentPhase === 'work' });
+  
+  // Resync the focus mode timer when session is resumed
+  if (newState.currentPhase === 'work') {
+    await chrome.storage.local.set({
+      focusModeEndTime: phaseEndTime,
+      focusModeDuration: Math.ceil(state.pausedTimeRemainingMs / (60 * 1000))
+    });
+  }
+  
   chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
 }
 
