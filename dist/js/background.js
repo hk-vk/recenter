@@ -1,8 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: ./src/utils/CONSTANTS/ChatGPT.ts
+;// ./src/utils/CONSTANTS/ChatGPT.ts
 // ChatGPT CONSTANTS
 const baseUrl = "https://api.openai.com/v1";
 const model = "gpt-3.5-turbo-0125";
@@ -24,7 +23,7 @@ const DAILY_RECAP_PROMPT = (history, productivePercentage) => {
   This is the browser history in a certain time period. Summarize this into a simple 7-8 sentence summary. The goal of this summary is to help the user realize what they have been browsing and if that is wasteful. This should encourage them to spend less time on wasteful non-productive sites. This is also a summary for the previous day and can say so. It is implicit that this is the browser history so need not be mentioned. This can be funny. This should be in accessible english and speak directly to the user and refer to them as "you". Pay special attention to any interesting titles and use those in commenting on what the user might have been doing. Have an unusual introduction and a cold-open to the summary. Acknowledge how well the user spent time overall without referring to the percentage`;
 };
 
-;// CONCATENATED MODULE: ./src/utils/queryStorage/UpdateWebsitesInStorage.ts
+;// ./src/utils/queryStorage/UpdateWebsitesInStorage.ts
 /*
 Function to update websites in storage
 */
@@ -66,7 +65,7 @@ function updateWebsitesInStorage(websites) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/chatGPT/EstimatedCost.ts
+;// ./src/utils/chatGPT/EstimatedCost.ts
 var EstimatedCost_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -127,7 +126,7 @@ function estimatedCost(inputToken, outputToken, purpose) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/chatGPT/AITagging.ts
+;// ./src/utils/chatGPT/AITagging.ts
 var AITagging_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -246,7 +245,7 @@ function AITagging() {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/CONSTANTS/texts.ts
+;// ./src/utils/CONSTANTS/texts.ts
 const NO_API_KEY_SUMMARY = "Please enter an OPENAI API Key to create and display summaries. Here's <a href='https://community.openai.com/t/how-do-i-get-my-api-key/29343' rel='noreferrer' target='_blank'>how to get one</a>";
 const API_CALL_FAILED_SUMMARY = "Whoops, couldn't generate a summary. Not sure why.";
 const SUMMARY_TIME_TOO_SHORT = "Looks like you didn't browse for long enough for a summary. That's probably a good thing!";
@@ -277,7 +276,7 @@ const focusMessage = [
     { line1: "You're a zen master!", line2: "On top of the world!" },
 ];
 
-;// CONCATENATED MODULE: ./src/utils/queryStorage/GetTaggedTime.ts
+;// ./src/utils/queryStorage/GetTaggedTime.ts
 /*
 Function to get the time of the user on a website along with tag
 */
@@ -341,7 +340,7 @@ function getTaggedTime(type) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/scripts/mmToHM.ts
+;// ./src/utils/scripts/mmToHM.ts
 function msToHM(ms) {
     // 1- Convert to seconds:
     let seconds = Math.floor(ms / 1000);
@@ -362,7 +361,7 @@ function msToHM(ms) {
     return `${hours}h ${minutes}m`;
 }
 
-;// CONCATENATED MODULE: ./src/utils/scripts/processHistory.ts
+;// ./src/utils/scripts/processHistory.ts
 var processHistory_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -456,7 +455,7 @@ function removeLessSignificantTerms(organizedHistory) {
     return organizedHistory;
 }
 
-;// CONCATENATED MODULE: ./src/utils/chatGPT/API_CALL.ts
+;// ./src/utils/chatGPT/API_CALL.ts
 var API_CALL_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -517,7 +516,7 @@ function apiCallWithTimeout(prompt, timeout = 30000, purpose, authKey) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/chatGPT/DailyRecap.ts
+;// ./src/utils/chatGPT/DailyRecap.ts
 var DailyRecap_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -590,7 +589,7 @@ function prevDaySummary(history, authKey, date, focusRate) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/chatGPT/HourlyRecap.ts
+;// ./src/utils/chatGPT/HourlyRecap.ts
 var HourlyRecap_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -700,7 +699,7 @@ function prevHourSummary(history, authKey, date, productiveTime) {
     });
 }
 
-;// CONCATENATED MODULE: ./src/utils/scripts/setBadgeText.ts
+;// ./src/utils/scripts/setBadgeText.ts
 function setBadgeText(time, tabId) {
     chrome.action.setBadgeText({ text: getTime(time), tabId: tabId });
 }
@@ -716,7 +715,7 @@ function getTime(time) {
         return `${hours}h`;
 }
 
-;// CONCATENATED MODULE: ./src/utils/main/WebTime.ts
+;// ./src/utils/main/WebTime.ts
 /*
     Monitor user activity and store the time spent on websites
 */
@@ -971,7 +970,18 @@ class WebTime {
     }
 }
 
-;// CONCATENATED MODULE: ./src/background.ts
+;// ./src/utils/CONSTANTS/SessionConstants.ts
+const ACTIVE_SESSION_STORAGE_KEY = 'activeSession';
+const SESSION_ALARM_NAME = 'sessionTransitionAlarm';
+
+;// ./src/utils/CONSTANTS/SessionTemplates.ts
+const DEFAULT_SESSION_TEMPLATES = [
+    { id: 'pomodoro_25_5', name: 'Pomodoro (25/5)', workMinutes: 25, breakMinutes: 5, cycles: 4, description: 'Classic 25 min focus, 5 min break.' },
+    { id: 'deep_work_50_10', name: 'Deep Work (50/10)', workMinutes: 50, breakMinutes: 10, cycles: 2, description: '50 min intense focus, 10 min break.' },
+    { id: 'quick_sprint_15_3', name: 'Quick Sprint (15/3)', workMinutes: 15, breakMinutes: 3, cycles: 6, description: 'Short burst of 15 min work, 3 min refresh.' },
+];
+
+;// ./src/background.ts
 var background_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -981,6 +991,8 @@ var background_awaiter = (undefined && undefined.__awaiter) || function (thisArg
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 
@@ -1002,6 +1014,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             sendResponse({ success: false, error: error.message });
         });
         return true; // Indicates that response will be sent asynchronously
+    }
+    else if (request.type === 'START_SESSION' && request.templateId) {
+        startSession(request.templateId, request.template);
+    }
+    else if (request.type === 'PAUSE_SESSION') {
+        pauseSession();
+    }
+    else if (request.type === 'RESUME_SESSION') {
+        resumeSession();
+    }
+    else if (request.type === 'END_SESSION') {
+        endSession();
     }
 });
 var isExtensionDisabled = false;
@@ -1097,6 +1121,9 @@ chrome.alarms.onAlarm.addListener((alarm) => background_awaiter(void 0, void 0, 
         yield chrome.storage.local.remove("focusModeEndTime");
         yield chrome.storage.local.remove("focusModeDuration");
     }
+    if (alarm.name === SESSION_ALARM_NAME) {
+        yield transitionSessionPhase();
+    }
 }));
 checkAlarm();
 chrome.storage.local.get((res) => {
@@ -1109,6 +1136,175 @@ chrome.storage.local.get((res) => {
 chrome.runtime.onStartup.addListener(() => { });
 chrome.action.setBadgeBackgroundColor({ color: [0, 255, 0, 0] });
 loadData();
+// Session management functions
+function startSession(templateId, templateData) {
+    return background_awaiter(this, void 0, void 0, function* () {
+        let template = templateData;
+        if (!template) {
+            const data = yield chrome.storage.local.get('customSessionTemplates');
+            const customTemplates = data.customSessionTemplates || [];
+            template = customTemplates.find(t => t.id === templateId);
+            if (!template) {
+                template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === templateId);
+            }
+        }
+        if (!template) {
+            console.error(`Session template not found for ID: ${templateId}`);
+            chrome.notifications.create(SESSION_ALARM_NAME + '_error_start', {
+                type: 'basic',
+                iconUrl: 'images/recenter_logo.png',
+                title: 'Session Start Error',
+                message: `Could not find session template: ${templateId}.`,
+            });
+            return;
+        }
+        const now = Date.now();
+        const phaseEndTime = now + template.workMinutes * 60 * 1000;
+        const newState = {
+            templateId,
+            currentPhase: 'work',
+            phaseKey: 'work-1',
+            phaseEndTime,
+            isPaused: false,
+            currentCycle: 1,
+            totalCycles: template.cycles || 1
+        };
+        yield chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
+        yield chrome.storage.local.set({ enableSuperFocusMode: true });
+        // Sync the focus mode timer with the session timer
+        // Store the start time and end time for accurate display
+        yield chrome.storage.local.set({
+            focusModeEndTime: phaseEndTime,
+            focusModeDuration: template.workMinutes,
+            focusModeStartTime: now
+        });
+        yield chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
+        chrome.notifications.create(SESSION_ALARM_NAME + '_start', {
+            type: 'basic',
+            iconUrl: 'images/recenter_logo.png',
+            title: `Started ${template.name}`,
+            message: `Work session: ${template.workMinutes} minutes. (Cycle 1/${template.cycles || 1})`,
+        });
+        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
+    });
+}
+function transitionSessionPhase() {
+    return background_awaiter(this, void 0, void 0, function* () {
+        const storage = yield chrome.storage.local.get(ACTIVE_SESSION_STORAGE_KEY);
+        const state = storage[ACTIVE_SESSION_STORAGE_KEY];
+        if (!state)
+            return;
+        let template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === state.templateId);
+        if (!template) {
+            const data = yield chrome.storage.local.get('customSessionTemplates');
+            const customTemplates = data.customSessionTemplates || [];
+            template = customTemplates.find(t => t.id === state.templateId);
+            if (!template) {
+                console.error(`Template not found for session: ${state.templateId}`);
+                return;
+            }
+        }
+        const isLastPhaseOfCycle = state.currentPhase === 'break';
+        const isLastCycle = state.currentCycle >= state.totalCycles;
+        if (isLastPhaseOfCycle && isLastCycle) {
+            yield endSession();
+            return;
+        }
+        const nextPhase = state.currentPhase === 'work' ? 'break' : 'work';
+        const nextCycle = isLastPhaseOfCycle ? state.currentCycle + 1 : state.currentCycle;
+        const durationMinutes = nextPhase === 'work' ? template.workMinutes : template.breakMinutes;
+        const nextPhaseKey = `${nextPhase}-${nextCycle}`;
+        const now = Date.now();
+        const phaseEndTime = now + durationMinutes * 60 * 1000;
+        const newState = Object.assign(Object.assign({}, state), { currentPhase: nextPhase, currentCycle: nextCycle, phaseKey: nextPhaseKey, phaseEndTime, isPaused: false, pausedTimeRemainingMs: undefined });
+        yield chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
+        yield chrome.storage.local.set({ enableSuperFocusMode: nextPhase === 'work' });
+        if (nextPhase === 'work') {
+            // Only sync focus mode timer for work phases
+            // Update start time to the current time for the new phase
+            yield chrome.storage.local.set({
+                focusModeEndTime: phaseEndTime,
+                focusModeDuration: durationMinutes,
+                focusModeStartTime: now
+            });
+        }
+        else {
+            // For break phases, clear the focus mode
+            yield chrome.storage.local.remove("focusModeEndTime");
+            yield chrome.storage.local.remove("focusModeDuration");
+            yield chrome.storage.local.remove("focusModeStartTime");
+        }
+        yield chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
+        const title = nextPhase === 'work'
+            ? `Break over! Time to work.`
+            : `Work session complete! Time for a break.`;
+        const cycleInfo = `(Cycle ${nextCycle}/${state.totalCycles})`;
+        chrome.notifications.create(SESSION_ALARM_NAME + '_' + nextPhase, {
+            type: 'basic',
+            iconUrl: 'images/recenter_logo.png',
+            title,
+            message: `${durationMinutes} minutes ${nextPhase}. ${cycleInfo}`,
+        });
+        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
+    });
+}
+function pauseSession() {
+    return background_awaiter(this, void 0, void 0, function* () {
+        const storage = yield chrome.storage.local.get(ACTIVE_SESSION_STORAGE_KEY);
+        const state = storage[ACTIVE_SESSION_STORAGE_KEY];
+        if (!state || state.isPaused) {
+            return;
+        }
+        const remaining = state.phaseEndTime - Date.now();
+        yield chrome.alarms.clear(SESSION_ALARM_NAME);
+        const newState = Object.assign(Object.assign({}, state), { isPaused: true, pausedTimeRemainingMs: remaining });
+        yield chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
+        yield chrome.storage.local.set({ enableSuperFocusMode: false });
+        // Clear the focus mode when session is paused
+        yield chrome.storage.local.remove("focusModeEndTime");
+        yield chrome.storage.local.remove("focusModeDuration");
+        yield chrome.storage.local.remove("focusModeStartTime");
+        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
+    });
+}
+function resumeSession() {
+    return background_awaiter(this, void 0, void 0, function* () {
+        const storage = yield chrome.storage.local.get(ACTIVE_SESSION_STORAGE_KEY);
+        const state = storage[ACTIVE_SESSION_STORAGE_KEY];
+        if (!state || !state.isPaused || state.pausedTimeRemainingMs === undefined) {
+            return;
+        }
+        const now = Date.now();
+        const phaseEndTime = now + state.pausedTimeRemainingMs;
+        yield chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
+        const newState = Object.assign(Object.assign({}, state), { isPaused: false, phaseEndTime, pausedTimeRemainingMs: undefined });
+        yield chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
+        yield chrome.storage.local.set({ enableSuperFocusMode: newState.currentPhase === 'work' });
+        // Resync the focus mode timer when session is resumed
+        if (newState.currentPhase === 'work') {
+            yield chrome.storage.local.set({
+                focusModeEndTime: phaseEndTime,
+                focusModeDuration: Math.ceil(state.pausedTimeRemainingMs / (60 * 1000)),
+                focusModeStartTime: now
+            });
+        }
+        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
+    });
+}
+function endSession() {
+    return background_awaiter(this, void 0, void 0, function* () {
+        yield chrome.alarms.clear(SESSION_ALARM_NAME);
+        yield chrome.storage.local.set({ enableSuperFocusMode: false });
+        yield chrome.storage.local.remove(ACTIVE_SESSION_STORAGE_KEY);
+        chrome.notifications.create(SESSION_ALARM_NAME + '_ended', {
+            type: 'basic',
+            iconUrl: 'images/recenter_logo.png',
+            title: 'Session ended',
+            message: 'Your session has been ended.',
+        });
+        chrome.runtime.sendMessage({ type: 'SESSION_ENDED' });
+    });
+}
 
 /******/ })()
 ;

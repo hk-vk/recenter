@@ -1,13 +1,21 @@
 .sessions_page {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-  max-width: 800px;
-  margin: 0 auto;
   width: 100%;
   min-height: 100vh;
   background: var(--hero-grey);
+  position: relative;
+  
+  &__content {
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
   &__header {
     display: flex;
@@ -20,7 +28,7 @@
   &__description {
     color: var(--darker-grey);
     font-size: 0.9rem;
-    margin: 0 16px 8px;
+    margin: 0 16px 16px;
     line-height: 1.4;
   }
 

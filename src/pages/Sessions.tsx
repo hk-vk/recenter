@@ -56,57 +56,60 @@ export default function Sessions({ isFocused }: SessionsProps) {
   return (
     <div className="sessions_page">
       <Navbar text="Sessions" isFocused={isFocused} />
-      <p className="sessions_page__description">Time-boxed work intervals to boost your productivity and focus</p>
-      <div className="sessions_page__templates">
-        <SessionTemplatesControl />
-        <div className="sessions_page__custom">
-          <h3>Start a Custom Session</h3>
-          <input
-            type="text"
-            placeholder="Session Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <div className="sessions_page__custom_input_group">
-            <label htmlFor="workMinutes">Work Minutes</label>
+      
+      <div className="sessions_page__content">
+        <p className="sessions_page__description">Time-boxed work intervals to boost your productivity and focus</p>
+        <div className="sessions_page__templates">
+          <SessionTemplatesControl />
+          <div className="sessions_page__custom">
+            <h3>Start a Custom Session</h3>
             <input
-              id="workMinutes"
-              type="number"
-              min="1"
-              value={workMinutes}
-              onChange={e => setWorkMinutes(parseInt(e.target.value) || 0)}
+              type="text"
+              placeholder="Session Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
             />
+            <div className="sessions_page__custom_input_group">
+              <label htmlFor="workMinutes">Work Minutes</label>
+              <input
+                id="workMinutes"
+                type="number"
+                min="1"
+                value={workMinutes}
+                onChange={e => setWorkMinutes(parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="sessions_page__custom_input_group">
+              <label htmlFor="breakMinutes">Break Minutes</label>
+              <input
+                id="breakMinutes"
+                type="number"
+                min="1"
+                value={breakMinutes}
+                onChange={e => setBreakMinutes(parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="sessions_page__custom_input_group">
+              <label htmlFor="cycles">Number of Cycles</label>
+              <input
+                id="cycles"
+                type="number"
+                min="1"
+                value={cycles}
+                onChange={e => setCycles(parseInt(e.target.value) || 1)}
+              />
+            </div>
+            <div className="sessions_page__custom_checkbox">
+              <input 
+                type="checkbox" 
+                id="saveTemplate"
+                checked={saveTemplate}
+                onChange={e => setSaveTemplate(e.target.checked)}
+              />
+              <label htmlFor="saveTemplate">Save as template</label>
+            </div>
+            <Button text="Start Session" onClick={handleStartCustomSession} />
           </div>
-          <div className="sessions_page__custom_input_group">
-            <label htmlFor="breakMinutes">Break Minutes</label>
-            <input
-              id="breakMinutes"
-              type="number"
-              min="1"
-              value={breakMinutes}
-              onChange={e => setBreakMinutes(parseInt(e.target.value) || 0)}
-            />
-          </div>
-          <div className="sessions_page__custom_input_group">
-            <label htmlFor="cycles">Number of Cycles</label>
-            <input
-              id="cycles"
-              type="number"
-              min="1"
-              value={cycles}
-              onChange={e => setCycles(parseInt(e.target.value) || 1)}
-            />
-          </div>
-          <div className="sessions_page__custom_checkbox">
-            <input 
-              type="checkbox" 
-              id="saveTemplate"
-              checked={saveTemplate}
-              onChange={e => setSaveTemplate(e.target.checked)}
-            />
-            <label htmlFor="saveTemplate">Save as template</label>
-          </div>
-          <Button text="Start Session" onClick={handleStartCustomSession} />
         </div>
       </div>
     </div>
