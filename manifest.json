@@ -37,6 +37,7 @@
     "unlimitedStorage",
     "history",
     "alarms",
+    "notifications",
     "idle",
     "sidePanel"
   ]
