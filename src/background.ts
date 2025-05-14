@@ -199,9 +199,11 @@ async function startSession(templateId: string, templateData?: SessionTemplate) 
   await chrome.storage.local.set({ enableSuperFocusMode: true });
   
   // Sync the focus mode timer with the session timer
+  // Store the start time and end time for accurate display
   await chrome.storage.local.set({
     focusModeEndTime: phaseEndTime,
-    focusModeDuration: template.workMinutes
+    focusModeDuration: template.workMinutes,
+    focusModeStartTime: now
   });
   
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
@@ -261,14 +263,17 @@ async function transitionSessionPhase() {
   
   if (nextPhase === 'work') {
     // Only sync focus mode timer for work phases
+    // Update start time to the current time for the new phase
     await chrome.storage.local.set({
       focusModeEndTime: phaseEndTime,
-      focusModeDuration: durationMinutes
+      focusModeDuration: durationMinutes,
+      focusModeStartTime: now
     });
   } else {
     // For break phases, clear the focus mode
     await chrome.storage.local.remove("focusModeEndTime");
     await chrome.storage.local.remove("focusModeDuration");
+    await chrome.storage.local.remove("focusModeStartTime");
   }
   
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
@@ -306,6 +311,7 @@ async function pauseSession() {
   // Clear the focus mode when session is paused
   await chrome.storage.local.remove("focusModeEndTime");
   await chrome.storage.local.remove("focusModeDuration");
+  await chrome.storage.local.remove("focusModeStartTime");
   
   chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
 }
@@ -332,7 +338,8 @@ async function resumeSession() {
   if (newState.currentPhase === 'work') {
     await chrome.storage.local.set({
       focusModeEndTime: phaseEndTime,
-      focusModeDuration: Math.ceil(state.pausedTimeRemainingMs / (60 * 1000))
+      focusModeDuration: Math.ceil(state.pausedTimeRemainingMs / (60 * 1000)),
+      focusModeStartTime: now
     });
   }
   

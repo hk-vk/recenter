@@ -1,17 +1,21 @@
 import insertConfirmation from "../utils/DOM_SCRIPTS/InsertConfirmation";
 
 async function setStartTime() {
-  let duration =
-    (await chrome.storage.local.get("focusModeDuration")).focusModeDuration ||
-    50;
-  let endTime =
-    (await chrome.storage.local.get("focusModeEndTime")).focusModeEndTime ||
-    new Date().getTime() + duration * 60 * 1000;
+  const startTimeData = await chrome.storage.local.get(["focusModeStartTime", "focusModeDuration", "focusModeEndTime"]);
+  
+  let startTime = startTimeData.focusModeStartTime;
+  if (!startTime) {
+    // Fallback to calculation if startTime not available
+    const duration = startTimeData.focusModeDuration || 50;
+    const endTime = startTimeData.focusModeEndTime || (new Date().getTime() + duration * 60 * 1000);
+    startTime = endTime - (duration * 60 * 1000);
+  }
 
   const element = document.getElementById("startTime")!;
-  element.innerText = new Date(
-    endTime - duration * 60 * 1000
-  ).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  element.innerText = new Date(startTime).toLocaleTimeString(undefined, { 
+    hour: "2-digit", 
+    minute: "2-digit" 
+  });
 }
 
 async function updateTimeRemaining() {
@@ -43,6 +47,7 @@ async function exitFocusMode() {
   await chrome.storage.local.set({ enableSuperFocusMode: false });
   await chrome.storage.local.remove("focusModeEndTime");
   await chrome.storage.local.remove("focusModeDuration");
+  await chrome.storage.local.remove("focusModeStartTime");
   await chrome.alarms.clear("updateFocusMode");
   document.location.href = "https://www.google.com";
 }
