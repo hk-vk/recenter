@@ -122,7 +122,7 @@ chrome.storage.local.get("enableSuperFocusMode", (res: any) => {
 });
 
 chrome.storage.local.get("activeSession", (data: any) => {
-  if (data.activeSession && !data.activeSession.isPaused) {
+  if (data.activeSession) {
     insertSessionTimer();
   }
 });
@@ -130,9 +130,11 @@ chrome.storage.local.get("activeSession", (data: any) => {
 chrome.storage.onChanged.addListener((changes: any) => {
   if (changes.activeSession) {
     const newState = changes.activeSession.newValue;
-    if (newState && !newState.isPaused) {
+    const oldState = changes.activeSession.oldValue;
+    
+    if (newState) {
       insertSessionTimer();
-    } else {
+    } else if (oldState && !newState) {
       removeSessionTimer();
     }
   }
