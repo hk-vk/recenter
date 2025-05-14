@@ -1,0 +1,25 @@
+// Styles for session templates control component
+.session_templates_control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.session_templates_control__template,
+.session_templates_control__active {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+}
+.session_templates_control__template__info,
+.session_templates_control__active__info {
+  display: flex;
+  justify-content: space-between;
+}
+.session_templates_control__active {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.session_templates_control__active__name {
+  font-weight: bold;
+} 
