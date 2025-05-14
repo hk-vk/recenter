@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SessionTemplatesControl from '../components/SessionTemplatesControl/SessionTemplatesControl'
 import { SessionTemplate } from '../types/Session'
+import Navbar from '../components/Navbar/Navbar'
 import './Sessions.scss'
 
 export default function Sessions() {
@@ -29,7 +30,7 @@ export default function Sessions() {
 
   return (
     <div className="sessions_page">
-      <h2>Sessions</h2>
+      <Navbar text="Sessions" isFocused={true}></Navbar>
       <SessionTemplatesControl />
       <div className="sessions_page__custom">
         <h3>Create Custom Session</h3>
