@@ -22,7 +22,12 @@ export default function SessionOverlay() {
   }, [])
 
   useEffect(() => {
-    if (!activeSession || activeSession.isPaused) return
+    if (!activeSession || activeSession.isPaused) {
+      if (activeSession && activeSession.pausedTimeRemainingMs) {
+        setTimeRemaining(activeSession.pausedTimeRemainingMs);
+      }
+      return;
+    }
     const updateRemaining = () => {
       const diff = activeSession.phaseEndTime - Date.now()
       setTimeRemaining(diff > 0 ? diff : 0)
@@ -38,19 +43,35 @@ export default function SessionOverlay() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
+  const handlePauseResume = () => {
+    if (!activeSession) return;
+    const messageType = activeSession.isPaused ? 'RESUME_SESSION' : 'PAUSE_SESSION';
+    chrome.runtime.sendMessage({ type: messageType });
+  }
+
+  const handleEndSession = () => {
+    chrome.runtime.sendMessage({ type: 'END_SESSION' });
+  }
+
   if (!activeSession) return null
 
   return (
-    <div className="session_overlay">
-      <div className="session_overlay__content">
-        <div className="session_overlay__phase">
-          Current Phase: {activeSession.currentPhase === 'work' ? 'Work' : 'Break'}
-          {activeSession.currentCycle && activeSession.totalCycles && 
-            ` (${activeSession.currentCycle}/${activeSession.totalCycles})`}
-        </div>
-        <div className="session_overlay__timer">
-          {formatTime(timeRemaining)}
-        </div>
+    <div className="session_overlay__content"> {/* Styles will target this via ID root */}
+      <div className="session_overlay__phase">
+        Current Phase: {activeSession.currentPhase === 'work' ? 'Work' : 'Break'}
+        {activeSession.currentCycle && activeSession.totalCycles && 
+          ` (${activeSession.currentCycle}/${activeSession.totalCycles})`}
+      </div>
+      <div className="session_overlay__timer">
+        {formatTime(timeRemaining)}
+      </div>
+      <div className="session_overlay__controls">
+        <button onClick={handlePauseResume} className="session_overlay__button">
+          {activeSession.isPaused ? 'Resume' : 'Pause'}
+        </button>
+        <button onClick={handleEndSession} className="session_overlay__button session_overlay__button--end">
+          End Session
+        </button>
       </div>
     </div>
   )

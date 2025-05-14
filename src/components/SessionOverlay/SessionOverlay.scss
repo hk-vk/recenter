@@ -1,65 +1,106 @@
-.session_overlay {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
+/* Ensure Inter font is available if not already loaded by the page or another script */
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap");
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 16px;
-    background: var(--background-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
-    min-width: 200px;
-    backdrop-filter: blur(8px);
-    transition: transform 0.2s ease;
+#recenter-session-overlay-root,
+#recenter-session-overlay-root * {
+  all: revert !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  box-sizing: border-box !important;
+}
 
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
+#recenter-session-overlay-root .session_overlay__content {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 2147483647 !important; /* Max z-index */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important; /* Increased gap for buttons */
+  padding: 16px !important;
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e0e0e0 !important;
+  min-width: 230px !important; /* Adjusted min-width for buttons */
+  color: #333333 !important;
+}
 
-  &__phase {
-    font-size: 0.9rem;
-    color: var(--font-color);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+#recenter-session-overlay-root .session_overlay__phase {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #333333 !important;
+}
 
-    &::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--blue);
-      animation: pulse 2s infinite;
-    }
-  }
+#recenter-session-overlay-root .session_overlay__phase::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background-color: #2087ff !important;
+  animation: pulse 1.5s infinite ease-in-out !important;
+}
 
-  &__timer {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--font-color);
-    text-align: center;
-  }
+#recenter-session-overlay-root .session_overlay__timer {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #1a73e8 !important;
+  text-align: center !important;
+}
+
+#recenter-session-overlay-root .session_overlay__controls {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin-top: 8px !important; /* Space above buttons */
+}
+
+#recenter-session-overlay-root .session_overlay__button {
+  flex-grow: 1 !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  border: 1px solid #cccccc !important;
+  background-color: #f0f0f0 !important;
+  color: #333333 !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  transition: background-color 0.2s ease !important;
+}
+
+#recenter-session-overlay-root .session_overlay__button:hover {
+  background-color: #e0e0e0 !important;
+  border-color: #bbbbbb !important;
+}
+
+#recenter-session-overlay-root .session_overlay__button--end {
+  background-color: #ffebee !important; /* Light red for end button */
+  border-color: #ffcdd2 !important;
+  color: #c62828 !important; /* Darker red text */
+}
+
+#recenter-session-overlay-root .session_overlay__button--end:hover {
+  background-color: #ffcdd2 !important;
+  border-color: #ef9a9a !important;
 }
 
 @keyframes pulse {
   0% {
-    transform: scale(1);
-    opacity: 1;
+    transform: scale(1) !important;
+    opacity: 1 !important;
   }
   50% {
-    transform: scale(1.2);
-    opacity: 0.7;
+    transform: scale(1.15) !important;
+    opacity: 0.6 !important;
   }
   100% {
-    transform: scale(1);
-    opacity: 1;
+    transform: scale(1) !important;
+    opacity: 1 !important;
   }
 } 
