@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { DEFAULT_SESSION_TEMPLATES } from '../../utils/CONSTANTS/SessionTemplates'
-import { ActiveSessionState } from '../../types/Session'
+import { ActiveSessionState, SessionTemplate } from '../../types/Session'
 import Button from '../Button/Button'
 import './SessionTemplatesControl.scss'
 
 export default function SessionTemplatesControl() {
   const [activeSession, setActiveSession] = useState<ActiveSessionState | null>(null)
   const [timeRemaining, setTimeRemaining] = useState(0)
+  const [templates, setTemplates] = useState<SessionTemplate[]>(DEFAULT_SESSION_TEMPLATES)
 
   useEffect(() => {
     chrome.storage.local.get('activeSession', (data: any) => {
@@ -21,6 +22,13 @@ export default function SessionTemplatesControl() {
     return () => {
       chrome.storage.onChanged.removeListener(listener)
     }
+  }, [])
+
+  useEffect(() => {
+    chrome.storage.local.get('customSessionTemplates', (data: any) => {
+      const custom: SessionTemplate[] = data.customSessionTemplates || []
+      setTemplates([...DEFAULT_SESSION_TEMPLATES, ...custom])
+    })
   }, [])
 
   useEffect(() => {
@@ -52,7 +60,7 @@ export default function SessionTemplatesControl() {
   }
 
   if (activeSession) {
-    const template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === activeSession.templateId)
+    const template = templates.find(t => t.id === activeSession.templateId)
     return (
       <div className="session_templates_control">
         <div className="session_templates_control__active">
@@ -72,7 +80,7 @@ export default function SessionTemplatesControl() {
 
   return (
     <div className="session_templates_control">
-      {DEFAULT_SESSION_TEMPLATES.map(template => (
+      {templates.map(template => (
         <div className="session_templates_control__template" key={template.id}>
           <div className="session_templates_control__template__info">
             <div className="session_templates_control__template__name">{template.name}</div>
