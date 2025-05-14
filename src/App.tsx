@@ -25,7 +25,7 @@ function App() {
         ></Route>
         <Route
           path="/sessions"
-          element={<Sessions></Sessions>}
+          element={<Sessions isFocused={isFocused}></Sessions>}
         ></Route>
         <Route
           path="/home"
