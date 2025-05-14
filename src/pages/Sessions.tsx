@@ -56,6 +56,7 @@ export default function Sessions({ isFocused }: SessionsProps) {
   return (
     <div className="sessions_page">
       <Navbar text="Sessions" isFocused={isFocused} />
+      <p className="sessions_page__description">Time-boxed work intervals to boost your productivity and focus</p>
       <div className="sessions_page__templates">
         <SessionTemplatesControl />
         <div className="sessions_page__custom">
