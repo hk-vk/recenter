@@ -3,6 +3,7 @@ import { insertHourlySummary } from "./utils/DOM_SCRIPTS/HourlySummary";
 import { NudgeUser } from "./utils/main/NudgeUser";
 import { ProactiveTimer } from "./utils/main/ProactiveTimer";
 import { getTag } from "./utils/queryStorage/GetTag";
+import { insertSessionTimer, removeSessionTimer } from "./utils/DOM_SCRIPTS/SessionTimer"
 
 var isExtensionDisabled = false;
 var isExtensionDisabledOnWeekend: boolean = true;
@@ -19,7 +20,7 @@ async function setIsDisabled() {
       .isDisabledOnWeekend ||
       false) &&
     isWeekend;
-  chrome.storage.local.get("isDisabled", (data) => {
+  chrome.storage.local.get("isDisabled", (data: any) => {
     if (data === undefined) {
       chrome.storage.local.set({ isDisabled: false });
       isExtensionDisabled = false;
@@ -33,7 +34,7 @@ async function setIsDisabled() {
     }
   });
   chrome.storage.onChanged.addListener(
-    async (changes: { [key: string]: chrome.storage.StorageChange }) => {
+    async (changes: any) => {
       if (changes["isDisabled"]) {
         isExtensionDisabled = changes["isDisabled"].newValue;
       }
@@ -66,7 +67,7 @@ setIsDisabled();
 
 nudgeUser = new NudgeUser(checkDisable());
 
-chrome.storage.local.get("lastGreeted", (data) => {
+chrome.storage.local.get("lastGreeted", (data: any) => {
   if (checkDisable()) {
     return;
   }
@@ -109,7 +110,7 @@ setInterval(async () => {
   }
 }, 60 * 1000); // check every 1 minute
 
-chrome.storage.local.get("enableSuperFocusMode", (res) => {
+chrome.storage.local.get("enableSuperFocusMode", (res: any) => {
   const isBlocking = res?.enableSuperFocusMode || false;
   if (isBlocking) {
     getTag(document.location.origin).then((res) => {
@@ -117,6 +118,23 @@ chrome.storage.local.get("enableSuperFocusMode", (res) => {
         chrome.runtime.sendMessage({ redirect: "html/superfocus.html" });
       }
     });
+  }
+});
+
+chrome.storage.local.get("activeSession", (data: any) => {
+  if (data.activeSession && !data.activeSession.isPaused) {
+    insertSessionTimer();
+  }
+});
+
+chrome.storage.onChanged.addListener((changes: any) => {
+  if (changes.activeSession) {
+    const newState = changes.activeSession.newValue;
+    if (newState && !newState.isPaused) {
+      insertSessionTimer();
+    } else {
+      removeSessionTimer();
+    }
   }
 });
 
