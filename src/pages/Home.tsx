@@ -16,7 +16,6 @@ import DailySummaryBox from "../components/DailySummaryBox/DailySummaryBox";
 import SuperFocusMode from "../components/SuperFocusMode/SuperFocusMode";
 import ExtensionDisabledCover from "../components/ExtensionDisableCover/ExtensionDisabledCover";
 import HomePageHeader from "../components/HomePageHeader/HomePageHeader";
-import SessionTemplatesControl from "../components/SessionTemplatesControl/SessionTemplatesControl";
 
 interface HomeProps {
   isFocused: boolean;
@@ -98,7 +97,6 @@ export default function Home({ isFocused, setIsFocused }: HomeProps) {
           isFocused={isFocused}
         ></FocusRateBox>
         <QuickActionsBox></QuickActionsBox>
-        <SessionTemplatesControl></SessionTemplatesControl>
       </div>
       <div className="home_page__usage">
         <FilterOptions setFilter={setFilter}></FilterOptions>
