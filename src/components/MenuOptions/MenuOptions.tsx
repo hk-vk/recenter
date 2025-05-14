@@ -7,7 +7,7 @@ interface MenuOptionsProps {
 }
 
 export default function MenuOptions({ isFocused }: MenuOptionsProps) {
-  const options = ["Home", "Configure", "Profile"];
+  const options = ["Home", "Sessions", "Configure", "Profile"];
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   const location = useLocation();
@@ -16,10 +16,12 @@ export default function MenuOptions({ isFocused }: MenuOptionsProps) {
     const path = location.pathname;
     if (path === "/" || path === "/home") {
       setSelectedOption(0);
-    } else if (path === "/configure") {
+    } else if (path === "/sessions") {
       setSelectedOption(1);
-    } else if (path === "/profile") {
+    } else if (path === "/configure") {
       setSelectedOption(2);
+    } else if (path === "/profile") {
+      setSelectedOption(3);
     }
   }, [location.pathname]);
 
