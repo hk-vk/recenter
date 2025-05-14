@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Configure from "./pages/Configure";
 import Home from "./pages/Home";
+import Sessions from "./pages/Sessions";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./pages/Profile";
 
@@ -21,6 +22,10 @@ function App() {
           element={
             <Home isFocused={isFocused} setIsFocused={setIsFocused}></Home>
           }
+        ></Route>
+        <Route
+          path="/sessions"
+          element={<Sessions></Sessions>}
         ></Route>
         <Route
           path="/home"
