@@ -64,9 +64,13 @@ export default function SessionTemplatesControl() {
     return (
       <div className="session_templates_control">
         <div className="session_templates_control__active">
-          <div className="session_templates_control__active__name">{template?.name}</div>
-          <div className="session_templates_control__active__phase">
-            Phase: {activeSession.currentPhase === 'work' ? 'Work' : 'Break'}
+          <div className="session_templates_control__active__info">
+            <div className="session_templates_control__active__name">{template?.name}</div>
+            <div className="session_templates_control__active__phase">
+              {activeSession.currentPhase === 'work' ? 'Work' : 'Break'} Phase
+              {activeSession.currentCycle && activeSession.totalCycles && 
+                ` (${activeSession.currentCycle}/${activeSession.totalCycles})`}
+            </div>
           </div>
           <div className="session_templates_control__active__timer">
             {formatMs(timeRemaining)}
@@ -84,7 +88,10 @@ export default function SessionTemplatesControl() {
         <div className="session_templates_control__template" key={template.id}>
           <div className="session_templates_control__template__info">
             <div className="session_templates_control__template__name">{template.name}</div>
-            <div className="session_templates_control__template__duration">{template.workMinutes} / {template.breakMinutes}</div>
+            <div className="session_templates_control__template__duration">
+              {template.workMinutes}m work / {template.breakMinutes}m break
+              {template.cycles && ` • ${template.cycles} cycles`}
+            </div>
           </div>
           <Button text="Start" onClick={() => chrome.runtime.sendMessage({ type: 'START_SESSION', templateId: template.id })} />
         </div>
