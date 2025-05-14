@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       });
     return true; // Indicates that response will be sent asynchronously
   } else if (request.type === 'START_SESSION' && request.templateId) {
-    startSession(request.templateId);
+    startSession(request.templateId, request.template);
   } else if (request.type === 'PAUSE_SESSION') {
     pauseSession();
   } else if (request.type === 'RESUME_SESSION') {
@@ -159,11 +159,30 @@ chrome.action.setBadgeBackgroundColor({ color: [0, 255, 0, 0] });
 loadData();
 
 // Session management functions
-async function startSession(templateId: string) {
-  const template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === templateId);
+async function startSession(templateId: string, templateData?: SessionTemplate) {
+  let template = templateData;
+
   if (!template) {
-    throw new Error(`Invalid template id: ${templateId}`);
+    const data = await chrome.storage.local.get('customSessionTemplates');
+    const customTemplates: SessionTemplate[] = data.customSessionTemplates || [];
+    template = customTemplates.find(t => t.id === templateId);
+
+    if (!template) {
+      template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === templateId);
+    }
   }
+
+  if (!template) {
+    console.error(`Session template not found for ID: ${templateId}`);
+    chrome.notifications.create(SESSION_ALARM_NAME + '_error_start', {
+      type: 'basic',
+      iconUrl: 'images/recenter_logo.png',
+      title: 'Session Start Error',
+      message: `Could not find session template: ${templateId}.`,
+    });
+    return;
+  }
+
   const now = Date.now();
   const phaseEndTime = now + template.workMinutes * 60 * 1000;
   const newState: ActiveSessionState = {
@@ -172,7 +191,10 @@ async function startSession(templateId: string) {
     phaseKey: 'work-1',
     phaseEndTime,
     isPaused: false,
+    currentCycle: 1,
+    totalCycles: template.cycles || 1
   };
+
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: true });
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
@@ -180,7 +202,7 @@ async function startSession(templateId: string) {
     type: 'basic',
     iconUrl: 'images/recenter_logo.png',
     title: `Started ${template.name}`,
-    message: `Work session: ${template.workMinutes} minutes.`,
+    message: `Work session: ${template.workMinutes} minutes. (Cycle 1/${template.cycles || 1})`,
   });
   chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
 }
@@ -188,35 +210,59 @@ async function startSession(templateId: string) {
 async function transitionSessionPhase() {
   const storage = await chrome.storage.local.get(ACTIVE_SESSION_STORAGE_KEY);
   const state: ActiveSessionState = storage[ACTIVE_SESSION_STORAGE_KEY];
-  if (!state) {
+  if (!state) return;
+
+  let template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === state.templateId);
+  if (!template) {
+    const data = await chrome.storage.local.get('customSessionTemplates');
+    const customTemplates: SessionTemplate[] = data.customSessionTemplates || [];
+    template = customTemplates.find(t => t.id === state.templateId);
+    if (!template) {
+      console.error(`Template not found for session: ${state.templateId}`);
+      return;
+    }
+  }
+
+  const isLastPhaseOfCycle = state.currentPhase === 'break';
+  const isLastCycle = state.currentCycle >= state.totalCycles;
+
+  if (isLastPhaseOfCycle && isLastCycle) {
+    await endSession();
     return;
   }
-  const template = DEFAULT_SESSION_TEMPLATES.find(t => t.id === state.templateId);
-  if (!template) {
-    throw new Error(`Invalid template id: ${state.templateId}`);
-  }
+
   const nextPhase = state.currentPhase === 'work' ? 'break' : 'work';
+  const nextCycle = isLastPhaseOfCycle ? state.currentCycle + 1 : state.currentCycle;
   const durationMinutes = nextPhase === 'work' ? template.workMinutes : template.breakMinutes;
-  const nextPhaseKey = `${nextPhase}-1`;
+  const nextPhaseKey = `${nextPhase}-${nextCycle}`;
+  
   const now = Date.now();
   const phaseEndTime = now + durationMinutes * 60 * 1000;
+  
   const newState: ActiveSessionState = {
     ...state,
     currentPhase: nextPhase,
+    currentCycle: nextCycle,
     phaseKey: nextPhaseKey,
     phaseEndTime,
     isPaused: false,
     pausedTimeRemainingMs: undefined,
   };
+
   await chrome.storage.local.set({ [ACTIVE_SESSION_STORAGE_KEY]: newState });
   await chrome.storage.local.set({ enableSuperFocusMode: nextPhase === 'work' });
   await chrome.alarms.create(SESSION_ALARM_NAME, { when: phaseEndTime });
-  const title = nextPhase === 'work' ? `Break over! Time to work.` : `Work session complete! Time for a break.`;
+
+  const title = nextPhase === 'work' 
+    ? `Break over! Time to work.` 
+    : `Work session complete! Time for a break.`;
+  const cycleInfo = `(Cycle ${nextCycle}/${state.totalCycles})`;
+  
   chrome.notifications.create(SESSION_ALARM_NAME + '_' + nextPhase, {
     type: 'basic',
     iconUrl: 'images/recenter_logo.png',
     title,
-    message: `${durationMinutes} minutes ${nextPhase}.`,
+    message: `${durationMinutes} minutes ${nextPhase}. ${cycleInfo}`,
   });
   chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', payload: newState });
 }

@@ -4,6 +4,7 @@ export interface SessionTemplate {
   workMinutes: number
   breakMinutes: number
   description?: string
+  cycles: number
 }
 
 export interface ActiveSessionState {
@@ -13,4 +14,6 @@ export interface ActiveSessionState {
   phaseEndTime: number
   isPaused: boolean
   pausedTimeRemainingMs?: number
+  currentCycle: number
+  totalCycles: number
 } 

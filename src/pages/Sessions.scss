@@ -1,44 +1,85 @@
 .sessions_page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding-top: 90px;
-  position: relative;
-  background-color: var(--hero-grey);
-}
-.sessions_page__custom {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 30px;
-  background: var(--background-color);
-  padding: 20px;
-  border-radius: 15px;
-  width: 328px;
-  margin-bottom: 24px;
-
-  h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-}
-.sessions_page__custom input,
-.sessions_page__custom button {
+  gap: 24px;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--dark-grey);
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
-.sessions_page__custom button {
-  background: var(--blue);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  padding: 12px;
-  margin-top: 8px;
+
+  &__templates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  &__custom {
+    background: var(--background-color);
+    border-radius: 15px;
+    padding: 24px;
+    width: 100%;
+    max-width: 320px;
+
+    h3 {
+      margin: 0 0 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--hero-grey);
+      color: var(--font-color);
+      margin-bottom: 12px;
+    }
+
+    &_input_group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+
+      label {
+        font-size: 0.9rem;
+        color: var(--darker-grey);
+      }
+    }
+
+    &_checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+
+      input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+      }
+
+      label {
+        font-size: 0.9rem;
+        color: var(--font-color);
+      }
+    }
+
+    &_cycles {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+
+      label {
+        font-size: 0.9rem;
+        color: var(--darker-grey);
+      }
+
+      input {
+        width: 80px;
+      }
+    }
+  }
 } 
